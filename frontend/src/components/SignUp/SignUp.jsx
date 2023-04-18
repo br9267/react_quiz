@@ -1,13 +1,33 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
-import { Link } from 'react-router-dom';
+import {useState } from 'react';
+import axios from 'axios';
+function SignUp({onFormSwitch, setisAuth}) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-function SignUp() {
+   const handleChangeEmail = (event) => {
+      setEmail(event.target.value);
+  }
+
+  const handleChangePassword = (event) => {
+    setPassword(event.target.value); 
+  }
+
+  const handleSubmit = (event) => {
+    axios.post("http://127.0.0.1:3001/handleLogin", {email, password})
+    .then((response) => response.json())
+    .then((res) => {
+    console.log(res);
+  });
+    //setisAuth(true);
+  }
+
   return (
    <div className='m-4 p-4'>
      <div className='row'>
     <div className='container card shadow p-4 col-lg-5 col-md-12'>
-    <form>
+    <form onSubmit={handleSubmit}>
        
             <div className="mb-3">
           <label>Email address</label>
@@ -15,6 +35,7 @@ function SignUp() {
             type="email"
             className="form-control"
             placeholder="Enter email"
+            onChange={handleChangeEmail}
           />
         </div>
         <div className="mb-3">
@@ -23,6 +44,8 @@ function SignUp() {
             type="password"
             className="form-control"
             placeholder="Enter password"
+            onChange={handleChangePassword}
+
           />
         </div>
         <div className="d-grid">
@@ -30,11 +53,9 @@ function SignUp() {
             Submit
           </button>
         </div>
-        <p className="forgot-password text-right">
-         
-        </p>
-        
+
       </form>
+      <button onClick={() => onFormSwitch('Register')}>Not a member? Register Up!</button>
       </div>
       </div>
       </div>
