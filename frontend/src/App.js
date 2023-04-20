@@ -15,7 +15,7 @@ function App() {
 
   useEffect( () => {
     if (token) {
-      if (!client.userId) {
+      if (!client.userID) {
      client.connectUser(
         {
           id : cookie.get("userId"),

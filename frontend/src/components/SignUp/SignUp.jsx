@@ -20,9 +20,9 @@ function SignUp({onFormSwitch, setisAuth}) {
     event.preventDefault(); 
      await axios.post("http://localhost:3001/signup", {username, password})
     .then((response) => {
-      const {token,userId,username,email,password_hash} = response.data;
+      const {token,user_id,username,email,password_hash} = response.data;
       cookie.set("token",token);
-      cookie.set("userId",userId);
+      cookie.set("userId",user_id);
       cookie.set("username",username);
       cookie.set("email",email);
       cookie.set("password_hash",password_hash);

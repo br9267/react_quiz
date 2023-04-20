@@ -16,10 +16,10 @@ const token_duration = Math.floor(Date.now() / 1000) + (60 * 60);
 app.post("/register", async (req,res) => {
     try{
         const {username,email,password} = req.body;
-        const userId = uuidv4();
+        const user_id = uuidv4();
         const password_hash = await bcrypt.hash(password, 10);
-        const token = client.createToken(userId,token_duration);
-        res.status(200).json({token,userId,username,email,password_hash});
+        const token = client.createToken(user_id,token_duration);
+        res.status(200).json({token,user_id,username,email,password_hash});
     }catch(err){
         res.status(400).json(err);
     }
@@ -64,7 +64,7 @@ app.post("/signup", async (req, res) => {
 
     if (password_test){
         res.status(200).json({
-            token,userId:users[0].userId, username, email: users[0].email, password_hash:users[0].password_hash
+            token,user_id:users[0].id, username, email: users[0].email, password_hash:users[0].password_hash
         });
     };
 

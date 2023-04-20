@@ -27,7 +27,7 @@ const handleSubmit = async (event) => {
   .then((response) => {
     const {token,user_id,username,email,password_hash} = response.data;
     cookie.set("token",token);
-    cookie.set("user_id",user_id);
+    cookie.set("userId",user_id);
     cookie.set("username",username);
     cookie.set("email",email);
     cookie.set("password_hash",password_hash);
