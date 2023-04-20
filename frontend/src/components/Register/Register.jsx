@@ -21,18 +21,18 @@ const handleChangePassword = (event) => {
   setPassword(event.target.value);
 }
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  axios.post("http://localhost:3001/register", {username,email, password})
+const handleSubmit = async (event) => {
+  event.preventDefault(); 
+   await axios.post("http://localhost:3001/register", {username,email, password})
   .then((response) => {
     const {token,user_id,username,email,password_hash} = response.data;
     cookie.set("token",token);
-    cookie.set("userId",user_id);
+    cookie.set("user_id",user_id);
     cookie.set("username",username);
     cookie.set("email",email);
     cookie.set("password_hash",password_hash);
     setisAuth(true);
-});
+  });
 }
 
   return (

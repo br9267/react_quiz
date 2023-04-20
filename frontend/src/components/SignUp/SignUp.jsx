@@ -2,26 +2,34 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import {useState } from 'react';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 function SignUp({onFormSwitch, setisAuth}) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const cookie = new Cookies();
 
-   const handleChangeEmail = (event) => {
-      setEmail(event.target.value);
+   const handleChangeUsername = (event) => {
+    setUsername(event.target.value);
   }
 
   const handleChangePassword = (event) => {
     setPassword(event.target.value); 
   }
 
-  const handleSubmit = (event) => {
-    axios.post("http://127.0.0.1:3001/handleLogin", {email, password})
-    .then((response) => response.json())
-    .then((res) => {
-    console.log(res);
-  });
-    //setisAuth(true);
+  const handleSubmit = async (event) => {
+    event.preventDefault(); 
+     await axios.post("http://localhost:3001/signup", {username, password})
+    .then((response) => {
+      const {token,userId,username,email,password_hash} = response.data;
+      cookie.set("token",token);
+      cookie.set("userId",userId);
+      cookie.set("username",username);
+      cookie.set("email",email);
+      cookie.set("password_hash",password_hash);
+      setisAuth(true);
+    });
   }
+  
 
   return (
    <div className='m-4 p-4'>
@@ -29,14 +37,15 @@ function SignUp({onFormSwitch, setisAuth}) {
     <div className='container card shadow p-4 col-lg-5 col-md-12'>
     <form onSubmit={handleSubmit}>
        
-            <div className="mb-3">
-          <label>Email address</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Enter email"
-            onChange={handleChangeEmail}
-          />
+    <div className="mb-3">
+           <label>Username</label>
+           <input
+             type=""
+             className="form-control"
+             placeholder="Enter username"
+             onChange={handleChangeUsername}
+           />
+
         </div>
         <div className="mb-3">
           <label>Password</label>
@@ -55,7 +64,7 @@ function SignUp({onFormSwitch, setisAuth}) {
         </div>
 
       </form>
-      <button onClick={() => onFormSwitch('Register')}>Not a member? Register Up!</button>
+      <button onClick={() => onFormSwitch('Register')}>Not a member? Register!</button>
       </div>
       </div>
       </div>
