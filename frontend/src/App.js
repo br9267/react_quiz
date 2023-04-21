@@ -14,19 +14,23 @@ function App() {
   const client = StreamChat.getInstance('7wf2ag7vysbr');
 
   useEffect( () => {
-    if (token) {
-      if (!client.userID) {
-     client.connectUser(
+    async function connectUserHandler() {
+      client.connectUser(
         {
           id : cookie.get("userId"),
           name : cookie.get("username"),
           email: cookie.get("email"),
           password_hash : cookie.get("password_hash")
         },token
-      )}
+      )
+    }
+    if (token) {
+      if (!client.userID) {
+        connectUserHandler();
+      }
       setisAuth(true);
     }
-  }, []);
+  }, [token]);
 
 
   
@@ -48,6 +52,7 @@ function App() {
 
   return (
     <div>
+  
     {isAuth ? (
       <>
       <Chat client={client}>
